@@ -1,35 +1,42 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
   MetaStorage,
   HostCreated,
   TicketBought,
-  childCreated
-} from "../generated/MetaStorage/MetaStorage"
-import { ExampleEntity } from "../generated/schema"
+  childCreated,
+} from "../generated/MetaStorage/MetaStorage";
+import {
+  HostCreatedEntity,
+  TicketBoughtEntity,
+  ChildCreatedEntity,
+} from "../generated/schema";
 
 export function handleHostCreated(event: HostCreated): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+  let entity = HostCreatedEntity.load(event.transaction.from.toHex());
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+    entity = new HostCreatedEntity(event.transaction.from.toHex());
 
     // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+    entity.count = BigInt.fromI32(0);
   }
 
   // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
+  entity.count = entity.count + BigInt.fromI32(1);
 
   // Entity fields can be set based on event parameters
-  entity._hostAddress = event.params._hostAddress
-  entity.name = event.params.name
+  entity._hostAddress = event.params._hostAddress.toHexString();
+  entity.name = event.params.name;
+  entity.image = event.params.image;
+  entity.bio = event.params.bio;
+  entity.socialLinks = event.params.socialLinks;
 
   // Entities can be written to the store with `.save()`
-  entity.save()
+  entity.save();
 
   // Note: If a handler doesn't require existing field values, it is faster
   // _not_ to load the entity from the store. Instead, create it fresh with
@@ -49,6 +56,49 @@ export function handleHostCreated(event: HostCreated): void {
   // - contract.getEventDetails(...)
 }
 
-export function handleTicketBought(event: TicketBought): void {}
+export function handleTicketBought(event: TicketBought): void {
+  // Entities can be loaded from the store using a string ID; this ID
+  // needs to be unique across all entities of the same type
+  let entity = TicketBoughtEntity.load(
+    event.transaction.from.toHex() + "- ticket"
+  );
 
-export function handlechildCreated(event: childCreated): void {}
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (!entity) {
+    entity = new TicketBoughtEntity(
+      event.transaction.from.toHex() + "- ticket"
+    );
+
+    // Entity fields can be set using simple assignments
+    entity.count = BigInt.fromI32(0);
+  }
+  entity.count = entity.count + BigInt.fromI32(1);
+  entity.childContract = event.params.childContract.toHexString();
+  entity.save();
+}
+
+export function handlechildCreated(event: childCreated): void {
+  let entity = ChildCreatedEntity.load(
+    event.transaction.from.toHex() + "- child"
+  );
+
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (!entity) {
+    entity = new ChildCreatedEntity(event.transaction.from.toHex() + "- child");
+
+    // Entity fields can be set using simple assignments
+    entity.count = BigInt.fromI32(0);
+  }
+  entity.count = entity.count + BigInt.fromI32(1);
+  entity.title = event.params.title;
+  entity.fee = event.params.fee;
+  entity.seats = event.params.seats;
+  entity.image = event.params.image;
+  entity.eventHost = event.params.eventHost.toHexString();
+  entity.link = event.params.link;
+  entity.date = event.params.date;
+  entity.childAddress = event.params.childAddress.toHexString();
+  entity.save();
+}
