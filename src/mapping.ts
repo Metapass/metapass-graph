@@ -82,12 +82,12 @@ export function handleTicketBought(event: TicketBought): void {
 }
 
 export function handlechildCreated(event: childCreated): void {
-  let entity = ChildCreatedEntity.load(event.address.toHexString());
+  let entity = ChildCreatedEntity.load(event.transaction.hash.toHexString());
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
-    entity = new ChildCreatedEntity(event.address.toHexString());
+    entity = new ChildCreatedEntity(event.transaction.hash.toHexString());
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0);
