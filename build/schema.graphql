@@ -12,6 +12,7 @@ type TicketBoughtEntity @entity {
   id: ID!
   count: BigInt!
   childContract: String! # string
+  buyer: String! # string
 }
 
 type ChildCreatedEntity @entity {
@@ -26,4 +27,10 @@ type ChildCreatedEntity @entity {
   link: String! # string
   date: String! # string
   childAddress: String! # string
+}
+
+type FeaturedEntity @entity {
+  id: ID!
+  count: BigInt!
+  eventAddress: String! # string
 }

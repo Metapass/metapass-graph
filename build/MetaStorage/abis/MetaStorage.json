@@ -5,6 +5,19 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "featuredEventContract",
+        "type": "address"
+      }
+    ],
+    "name": "CreateNewFeature",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "_hostAddress",
         "type": "address"
       },
@@ -43,6 +56,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "childContract",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "buyer",
         "type": "address"
       }
     ],
@@ -142,7 +161,25 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_event",
+        "type": "address"
+      }
+    ],
+    "name": "createFeaturedEvent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_childContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_sender",
         "type": "address"
       }
     ],

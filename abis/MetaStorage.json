@@ -5,6 +5,19 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "featuredEventContract",
+        "type": "address"
+      }
+    ],
+    "name": "CreateNewFeature",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "_hostAddress",
         "type": "address"
       },
@@ -43,6 +56,12 @@
         "indexed": false,
         "internalType": "address",
         "name": "childContract",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "buyer",
         "type": "address"
       }
     ],
@@ -112,10 +131,26 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "_name", "type": "string" },
-      { "internalType": "string", "name": "_image", "type": "string" },
-      { "internalType": "string", "name": "_bio", "type": "string" },
-      { "internalType": "string", "name": "_socialLinks", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_image",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_bio",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_socialLinks",
+        "type": "string"
+      }
     ],
     "name": "addCreateHostProfile",
     "outputs": [],
@@ -124,7 +159,29 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_childContract", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_event",
+        "type": "address"
+      }
+    ],
+    "name": "createFeaturedEvent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_childContract",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_sender",
+        "type": "address"
+      }
     ],
     "name": "emitTicketBuy",
     "outputs": [],
@@ -137,24 +194,56 @@
     "outputs": [
       {
         "components": [
-          { "internalType": "string", "name": "title", "type": "string" },
-          { "internalType": "string", "name": "image", "type": "string" },
-          { "internalType": "string", "name": "link", "type": "string" },
-          { "internalType": "uint256", "name": "fee", "type": "uint256" },
-          { "internalType": "uint256", "name": "seats", "type": "uint256" },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "link",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "fee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "seats",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "occupiedSeats",
             "type": "uint256"
           },
-          { "internalType": "string", "name": "date", "type": "string" },
+          {
+            "internalType": "string",
+            "name": "date",
+            "type": "string"
+          },
           {
             "internalType": "address",
             "name": "childContract",
             "type": "address"
           },
-          { "internalType": "string", "name": "description", "type": "string" },
-          { "internalType": "address", "name": "eventHost", "type": "address" }
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "eventHost",
+            "type": "address"
+          }
         ],
         "internalType": "struct MetaStorage.EventData[]",
         "name": "_EventData",
@@ -166,20 +255,56 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "title", "type": "string" },
-      { "internalType": "uint256", "name": "fee", "type": "uint256" },
-      { "internalType": "uint256", "name": "seats", "type": "uint256" },
-      { "internalType": "uint256", "name": "occupiedSeats", "type": "uint256" },
-      { "internalType": "string", "name": "image", "type": "string" },
+      {
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "seats",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "occupiedSeats",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "image",
+        "type": "string"
+      },
       {
         "internalType": "address",
         "name": "eventHostAddress",
         "type": "address"
       },
-      { "internalType": "string", "name": "description", "type": "string" },
-      { "internalType": "string", "name": "link", "type": "string" },
-      { "internalType": "string", "name": "date", "type": "string" },
-      { "internalType": "address", "name": "child", "type": "address" }
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "link",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "date",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "child",
+        "type": "address"
+      }
     ],
     "name": "pushEventDetails",
     "outputs": [],

@@ -4,11 +4,13 @@ import {
   HostCreated,
   TicketBought,
   childCreated,
+  CreateNewFeature,
 } from "../generated/MetaStorage/MetaStorage";
 import {
   HostCreatedEntity,
   TicketBoughtEntity,
   ChildCreatedEntity,
+  FeaturedEntity,
 } from "../generated/schema";
 
 export function handleHostCreated(event: HostCreated): void {
@@ -75,18 +77,17 @@ export function handleTicketBought(event: TicketBought): void {
   }
   entity.count = entity.count + BigInt.fromI32(1);
   entity.childContract = event.params.childContract.toHexString();
+  entity.buyer = event.params.buyer.toHexString();
   entity.save();
 }
 
 export function handlechildCreated(event: childCreated): void {
-  let entity = ChildCreatedEntity.load(
-    event.transaction.from.toHex() + "- child"
-  );
+  let entity = ChildCreatedEntity.load(event.address.toHexString());
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
-    entity = new ChildCreatedEntity(event.transaction.from.toHex() + "- child");
+    entity = new ChildCreatedEntity(event.address.toHexString());
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0);
@@ -100,5 +101,14 @@ export function handlechildCreated(event: childCreated): void {
   entity.link = event.params.link;
   entity.date = event.params.date;
   entity.childAddress = event.params.childAddress.toHexString();
+  entity.save();
+}
+
+export function handleCreateNewFeature(eventThree: CreateNewFeature): void {
+  let entity = FeaturedEntity.load(eventThree.transaction.hash.toHexString());
+  if (!entity) {
+    entity = new FeaturedEntity(eventThree.transaction.hash.toHexString());
+  }
+  entity.eventAddress = eventThree.params.featuredEventContract.toHexString();
   entity.save();
 }

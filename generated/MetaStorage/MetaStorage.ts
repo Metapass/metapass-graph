@@ -10,6 +10,24 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class CreateNewFeature extends ethereum.Event {
+  get params(): CreateNewFeature__Params {
+    return new CreateNewFeature__Params(this);
+  }
+}
+
+export class CreateNewFeature__Params {
+  _event: CreateNewFeature;
+
+  constructor(event: CreateNewFeature) {
+    this._event = event;
+  }
+
+  get featuredEventContract(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class HostCreated extends ethereum.Event {
   get params(): HostCreated__Params {
     return new HostCreated__Params(this);
@@ -59,6 +77,10 @@ export class TicketBought__Params {
 
   get childContract(): Address {
     return this._event.parameters[0].value.toAddress();
+  }
+
+  get buyer(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -233,6 +255,36 @@ export class AddCreateHostProfileCall__Outputs {
   }
 }
 
+export class CreateFeaturedEventCall extends ethereum.Call {
+  get inputs(): CreateFeaturedEventCall__Inputs {
+    return new CreateFeaturedEventCall__Inputs(this);
+  }
+
+  get outputs(): CreateFeaturedEventCall__Outputs {
+    return new CreateFeaturedEventCall__Outputs(this);
+  }
+}
+
+export class CreateFeaturedEventCall__Inputs {
+  _call: CreateFeaturedEventCall;
+
+  constructor(call: CreateFeaturedEventCall) {
+    this._call = call;
+  }
+
+  get _event(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class CreateFeaturedEventCall__Outputs {
+  _call: CreateFeaturedEventCall;
+
+  constructor(call: CreateFeaturedEventCall) {
+    this._call = call;
+  }
+}
+
 export class EmitTicketBuyCall extends ethereum.Call {
   get inputs(): EmitTicketBuyCall__Inputs {
     return new EmitTicketBuyCall__Inputs(this);
@@ -252,6 +304,10 @@ export class EmitTicketBuyCall__Inputs {
 
   get _childContract(): Address {
     return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _sender(): Address {
+    return this._call.inputValues[1].value.toAddress();
   }
 }
 
