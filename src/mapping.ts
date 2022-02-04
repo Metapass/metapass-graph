@@ -63,46 +63,38 @@ export function handleTicketBought(event: TicketBought): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
   let entity = TicketBoughtEntity.load(
-    event.transaction.from.toHexString + event.logIndex.toHexString()
+    event.transaction.hash.toHexString() + "-" + event.logIndex.toHexString()
   );
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
     entity = new TicketBoughtEntity(
-      event.transaction.from.toHexString + event.logIndex.toHexString()
+      event.transaction.hash.toHexString() + "-" + event.logIndex.toHexString()
     );
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0);
   }
   entity.count = entity.count + BigInt.fromI32(1);
-  let user = User.load(
-    event.params.buyer.toHexString() +
-      "-" +
-      event.params.childContract +
-      "-" +
-      entity.count.toString()
-  );
+  let user = User.load(event.params.buyer.toHexString());
   if (!user) {
-    user = new User(
-      event.params.buyer.toHexString() +
-        "-" +
-        event.params.childContract +
-        "-" +
-        entity.count.toString()
-    );
+    user = new User(event.params.buyer.toHexString());
   }
-
-  entity.childContract = event.params.childContract.toHexString();
-
-  // entity.ticketId = en
-  entity.save();
   user.save();
+  let childcon = ChildCreatedEntity.load(
+    event.params.childContract.toHexString()
+  );
+  if (childcon) {
+    entity.childContract = childcon.id;
+  }
+  entity.buyer = user.id;
+  // // entity.ticketId = en
+  entity.save();
 }
 
 export function handlechildCreated(event: childCreated): void {
-  let entity = ChildCreatedEntity.load(event.transaction.hash.toHexString());
+  let entity = ChildCreatedEntity.load(event.address.toHexString());
   // let user = User.load();
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
@@ -111,7 +103,7 @@ export function handlechildCreated(event: childCreated): void {
   //   eventTwo.params.buyer.toHexString() + "-" + eventTwo.params.childContract
   // );
   if (!entity) {
-    entity = new ChildCreatedEntity(event.transaction.hash.toHexString());
+    entity = new ChildCreatedEntity(event.address.toHexString());
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0);
@@ -128,6 +120,7 @@ export function handlechildCreated(event: childCreated): void {
   entity.link = event.params.link;
   entity.date = event.params.date;
   entity.category = event.params.category;
+  entity.buyers = [];
   entity.childAddress = event.params.childAddress.toHexString();
 
   entity.save();

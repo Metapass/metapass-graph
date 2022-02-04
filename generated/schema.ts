@@ -113,7 +113,6 @@ export class TicketBoughtEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("childContract", Value.fromString(""));
     this.set("buyer", Value.fromString(""));
   }
 
@@ -154,13 +153,21 @@ export class TicketBoughtEntity extends Entity {
     this.set("count", Value.fromBigInt(value));
   }
 
-  get childContract(): string {
+  get childContract(): string | null {
     let value = this.get("childContract");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set childContract(value: string) {
-    this.set("childContract", Value.fromString(value));
+  set childContract(value: string | null) {
+    if (!value) {
+      this.unset("childContract");
+    } else {
+      this.set("childContract", Value.fromString(<string>value));
+    }
   }
 
   get buyer(): string {
@@ -188,6 +195,7 @@ export class ChildCreatedEntity extends Entity {
     this.set("link", Value.fromString(""));
     this.set("date", Value.fromString(""));
     this.set("childAddress", Value.fromString(""));
+    this.set("category", Value.fromString(""));
   }
 
   save(): void {
@@ -307,6 +315,24 @@ export class ChildCreatedEntity extends Entity {
   set childAddress(value: string) {
     this.set("childAddress", Value.fromString(value));
   }
+
+  get category(): string {
+    let value = this.get("category");
+    return value!.toString();
+  }
+
+  set category(value: string) {
+    this.set("category", Value.fromString(value));
+  }
+
+  get buyers(): Array<string> {
+    let value = this.get("buyers");
+    return value!.toStringArray();
+  }
+
+  set buyers(value: Array<string>) {
+    this.set("buyers", Value.fromStringArray(value));
+  }
 }
 
 export class FeaturedEntity extends Entity {
@@ -360,5 +386,47 @@ export class FeaturedEntity extends Entity {
 
   set eventAddress(value: string) {
     this.set("eventAddress", Value.fromString(value));
+  }
+}
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save User entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save User entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("User", id.toString(), this);
+    }
+  }
+
+  static load(id: string): User | null {
+    return changetype<User | null>(store.get("User", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tickets(): Array<string> {
+    let value = this.get("tickets");
+    return value!.toStringArray();
+  }
+
+  set tickets(value: Array<string>) {
+    this.set("tickets", Value.fromStringArray(value));
   }
 }

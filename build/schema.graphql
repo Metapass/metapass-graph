@@ -11,8 +11,9 @@ type HostCreatedEntity @entity {
 type TicketBoughtEntity @entity {
   id: ID!
   count: BigInt!
-  childContract: String! # string
-  buyer: String! # string
+  childContract: ChildCreatedEntity
+  buyer: User! # User
+  # ticketID: BigInt! # bigint
 }
 
 type ChildCreatedEntity @entity {
@@ -27,10 +28,18 @@ type ChildCreatedEntity @entity {
   link: String! # string
   date: String! # string
   childAddress: String! # string
+  category: String! # string
+  # user: User! # User
+  buyers: [TicketBoughtEntity!]! @derivedFrom(field: "childContract")
 }
 
 type FeaturedEntity @entity {
   id: ID!
   count: BigInt!
   eventAddress: String! # string
+}
+
+type User @entity {
+  id: ID!
+  tickets: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
 }

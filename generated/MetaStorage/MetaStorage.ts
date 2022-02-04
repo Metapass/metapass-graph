@@ -132,6 +132,14 @@ export class childCreated__Params {
   get childAddress(): Address {
     return this._event.parameters[8].value.toAddress();
   }
+
+  get category(): string {
+    return this._event.parameters[9].value.toString();
+  }
+
+  get buyers(): Array<Address> {
+    return this._event.parameters[10].value.toAddressArray();
+  }
 }
 
 export class MetaStorage__getEventDetailsResult_EventDataStruct extends ethereum.Tuple {
@@ -348,32 +356,32 @@ export class PushEventDetailsCall__Inputs {
     return this._call.inputValues[2].value.toBigInt();
   }
 
-  get occupiedSeats(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
   get image(): string {
-    return this._call.inputValues[4].value.toString();
+    return this._call.inputValues[3].value.toString();
   }
 
   get eventHostAddress(): Address {
-    return this._call.inputValues[5].value.toAddress();
+    return this._call.inputValues[4].value.toAddress();
   }
 
   get description(): string {
-    return this._call.inputValues[6].value.toString();
+    return this._call.inputValues[5].value.toString();
   }
 
   get link(): string {
-    return this._call.inputValues[7].value.toString();
+    return this._call.inputValues[6].value.toString();
   }
 
   get date(): string {
-    return this._call.inputValues[8].value.toString();
+    return this._call.inputValues[7].value.toString();
   }
 
   get child(): Address {
-    return this._call.inputValues[9].value.toAddress();
+    return this._call.inputValues[8].value.toAddress();
+  }
+
+  get category(): string {
+    return this._call.inputValues[9].value.toString();
   }
 }
 
