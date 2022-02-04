@@ -6,9 +6,9 @@ dataSources:
     name: MetaStorage
     network: mumbai
     source:
-      address: "0xEd38011305ff0dBCD75B39bb07295E9E6bff5BA6"
+      address: "0x5a1e3eee7890ad7092ba130d04521424f33334f0"
       abi: MetaStorage
-      startBlock: 24407206
+      startBlock: 24582983
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -17,6 +17,7 @@ dataSources:
         - HostCreated
         - TicketBought
         - childCreated
+        - CreateNewFeature
       abis:
         - name: MetaStorage
           file: ./abis/MetaStorage.json

@@ -124,6 +124,18 @@
         "internalType": "address",
         "name": "childAddress",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "buyers",
+        "type": "address[]"
       }
     ],
     "name": "childCreated",
@@ -271,11 +283,6 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "occupiedSeats",
-        "type": "uint256"
-      },
-      {
         "internalType": "string",
         "name": "image",
         "type": "string"
@@ -304,6 +311,11 @@
         "internalType": "address",
         "name": "child",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "category",
+        "type": "string"
       }
     ],
     "name": "pushEventDetails",
