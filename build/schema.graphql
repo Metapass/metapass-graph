@@ -16,7 +16,7 @@ type TicketBoughtEntity @entity {
   # ticketID: BigInt! # bigint
 }
 
-type ChildCreatedEntity @entity {
+type ChildCreatedEntity implements User @entity {
   id: ID!
   count: BigInt!
   title: String! # string
@@ -30,7 +30,7 @@ type ChildCreatedEntity @entity {
   childAddress: String! # string
   category: String! # string
   # user: User! # User
-  buyers: [TicketBoughtEntity!]! @derivedFrom(field: "childContract")
+  buyers: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
 }
 
 type FeaturedEntity @entity {
@@ -43,3 +43,7 @@ type User @entity {
   id: ID!
   tickets: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
 }
+# interface Userschema {
+#   id: ID!
+#   tickets: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
+# }
