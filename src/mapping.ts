@@ -13,6 +13,7 @@ import {
   FeaturedEntity,
   User,
 } from "../generated/schema";
+import { log } from "@graphprotocol/graph-ts";
 
 export function handleHostCreated(event: HostCreated): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -81,20 +82,38 @@ export function handleTicketBought(event: TicketBought): void {
   if (!user) {
     user = new User(event.params.buyer.toHexString());
   }
-  user.save();
+
   let childcon = ChildCreatedEntity.load(
     event.params.childContract.toHexString()
   );
+  log.warning("childcon outside:{}", ["outside"]);
   if (childcon) {
+    log.warning("childcon: {}", [childcon.id]);
     entity.childContract = childcon.id;
+    if (childcon.buyers.length == 0) {
+      let array = new Array<string>();
+      array.push(user.id);
+      childcon.buyers = array;
+    } else {
+      let array = childcon.buyers;
+      array.push(user.id);
+      childcon.buyers = array;
+    }
+    childcon.save();
+    log.warning("childcon user.id: {}", [user.id]);
+    log.warning("childcon len of buyers: {}", [
+      childcon.buyers.length.toString(),
+    ]);
+    log.warning("childcon buyers: {}", [childcon.buyers[0]]);
   }
   entity.buyer = user.id;
   // // entity.ticketId = en
+  user.save();
   entity.save();
 }
 
 export function handlechildCreated(event: childCreated): void {
-  let entity = ChildCreatedEntity.load(event.address.toHexString());
+  let entity = ChildCreatedEntity.load(event.params.childAddress.toHexString());
   // let user = User.load();
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
@@ -103,7 +122,7 @@ export function handlechildCreated(event: childCreated): void {
   //   eventTwo.params.buyer.toHexString() + "-" + eventTwo.params.childContract
   // );
   if (!entity) {
-    entity = new ChildCreatedEntity(event.address.toHexString());
+    entity = new ChildCreatedEntity(event.params.childAddress.toHexString());
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0);

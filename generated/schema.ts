@@ -196,6 +196,7 @@ export class ChildCreatedEntity extends Entity {
     this.set("date", Value.fromString(""));
     this.set("childAddress", Value.fromString(""));
     this.set("category", Value.fromString(""));
+    this.set("buyers", Value.fromStringArray(new Array(0)));
   }
 
   save(): void {

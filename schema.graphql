@@ -16,7 +16,7 @@ type TicketBoughtEntity @entity {
   # ticketID: BigInt! # bigint
 }
 
-type ChildCreatedEntity implements User @entity {
+type ChildCreatedEntity @entity {
   id: ID!
   count: BigInt!
   title: String! # string
@@ -30,7 +30,7 @@ type ChildCreatedEntity implements User @entity {
   childAddress: String! # string
   category: String! # string
   # user: User! # User
-  buyers: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
+  buyers: [User!]!
 }
 
 type FeaturedEntity @entity {
