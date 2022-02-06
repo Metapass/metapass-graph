@@ -146,10 +146,23 @@ export function handlechildCreated(event: childCreated): void {
 }
 
 export function handleCreateNewFeature(eventThree: CreateNewFeature): void {
-  let entity = FeaturedEntity.load(eventThree.transaction.hash.toHexString());
+  let entity = FeaturedEntity.load(
+    eventThree.transaction.hash.toHexString() +
+      "-" +
+      eventThree.logIndex.toHexString()
+  );
   if (!entity) {
-    entity = new FeaturedEntity(eventThree.transaction.hash.toHexString());
+    entity = new FeaturedEntity(
+      eventThree.transaction.hash.toHexString() +
+        "-" +
+        eventThree.logIndex.toHexString()
+    );
   }
-  entity.eventAddress = eventThree.params.featuredEventContract.toHexString();
+  let child = ChildCreatedEntity.load(
+    eventThree.params.featuredEventContract.toHexString()
+  );
+  if (child) {
+    entity.event = child.id;
+  }
   entity.save();
 }

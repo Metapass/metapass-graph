@@ -36,7 +36,7 @@ type ChildCreatedEntity @entity {
 type FeaturedEntity @entity {
   id: ID!
   count: BigInt!
-  eventAddress: String! # string
+  event: ChildCreatedEntity
 }
 
 type User @entity {

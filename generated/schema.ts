@@ -342,7 +342,6 @@ export class FeaturedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("eventAddress", Value.fromString(""));
   }
 
   save(): void {
@@ -380,13 +379,21 @@ export class FeaturedEntity extends Entity {
     this.set("count", Value.fromBigInt(value));
   }
 
-  get eventAddress(): string {
-    let value = this.get("eventAddress");
-    return value!.toString();
+  get event(): string | null {
+    let value = this.get("event");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set eventAddress(value: string) {
-    this.set("eventAddress", Value.fromString(value));
+  set event(value: string | null) {
+    if (!value) {
+      this.unset("event");
+    } else {
+      this.set("event", Value.fromString(<string>value));
+    }
   }
 }
 
