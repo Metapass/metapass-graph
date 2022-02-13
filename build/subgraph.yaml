@@ -6,9 +6,9 @@ dataSources:
     name: MetaStorage
     network: mumbai
     source:
-      address: "0xB439506e3165F04B8442Bd8ABBf7Fdec4A7CF777"
+      address: "0x9eBF87df7877fe3D06051ee53916Ce828cF261f6"
       abi: MetaStorage
-      startBlock: 24684097
+      startBlock: 24885894
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

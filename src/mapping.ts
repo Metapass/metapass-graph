@@ -135,6 +135,7 @@ export function handlechildCreated(event: childCreated): void {
   entity.fee = event.params.fee;
   entity.seats = event.params.seats;
   entity.image = event.params.image;
+  entity.description = event.params.description;
   entity.eventHost = event.params.eventHost.toHexString();
   entity.link = event.params.link;
   entity.date = event.params.date;
