@@ -82,7 +82,7 @@ export function handleTicketBought(event: TicketBought): void {
   if (!user) {
     user = new User(event.params.buyer.toHexString());
   }
-
+  user.save();
   let childcon = ChildCreatedEntity.load(
     event.params.childContract.toHexString()
   );
@@ -96,19 +96,23 @@ export function handleTicketBought(event: TicketBought): void {
       childcon.buyers = array;
     } else {
       let array = childcon.buyers;
+      log.warning("array **: {}", array);
+      log.warning("user **: {}", [user.id]);
       array.push(user.id);
+      log.warning("array **2: {}", array);
       childcon.buyers = array;
+      log.warning("childcon.buyers **: {}", childcon.buyers);
     }
     childcon.save();
     log.warning("childcon user.id: {}", [user.id]);
     log.warning("childcon len of buyers: {}", [
       childcon.buyers.length.toString(),
     ]);
-    log.warning("childcon buyers: {}", [childcon.buyers[0]]);
+    log.warning("childcon buyers **: {}", childcon.buyers);
   }
   entity.buyer = user.id;
   // // entity.ticketId = en
-  user.save();
+
   entity.save();
 }
 
