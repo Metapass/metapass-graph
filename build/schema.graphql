@@ -27,6 +27,7 @@ type ChildCreatedEntity @entity {
   description: String! # string
   link: String! # string
   date: String! # string
+  ticketsBought: [TicketBoughtEntity!]! # TicketBoughtEntity
   childAddress: String! # string
   category: String! # string
   # user: User! # User

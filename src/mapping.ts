@@ -90,6 +90,16 @@ export function handleTicketBought(event: TicketBought): void {
   if (childcon) {
     log.warning("childcon: {}", [childcon.id]);
     entity.childContract = childcon.id;
+
+    if (childcon.ticketsBought.length == 0) {
+      let array = new Array<string>();
+      array.push(entity.id);
+      childcon.ticketsBought = array;
+    } else {
+      let array = childcon.ticketsBought;
+      array.push(entity.id);
+      childcon.ticketsBought = array;
+    }
     if (childcon.buyers.length == 0) {
       let array = new Array<string>();
       array.push(user.id);

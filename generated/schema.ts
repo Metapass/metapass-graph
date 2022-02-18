@@ -194,6 +194,7 @@ export class ChildCreatedEntity extends Entity {
     this.set("description", Value.fromString(""));
     this.set("link", Value.fromString(""));
     this.set("date", Value.fromString(""));
+    this.set("ticketsBought", Value.fromStringArray(new Array(0)));
     this.set("childAddress", Value.fromString(""));
     this.set("category", Value.fromString(""));
     this.set("buyers", Value.fromStringArray(new Array(0)));
@@ -306,6 +307,15 @@ export class ChildCreatedEntity extends Entity {
 
   set date(value: string) {
     this.set("date", Value.fromString(value));
+  }
+
+  get ticketsBought(): Array<string> {
+    let value = this.get("ticketsBought");
+    return value!.toStringArray();
+  }
+
+  set ticketsBought(value: Array<string>) {
+    this.set("ticketsBought", Value.fromStringArray(value));
   }
 
   get childAddress(): string {
