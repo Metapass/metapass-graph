@@ -113,6 +113,7 @@ export class TicketBoughtEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("count", Value.fromBigInt(BigInt.zero()));
+    this.set("ticketID", Value.fromBigInt(BigInt.zero()));
     this.set("buyer", Value.fromString(""));
   }
 
@@ -151,6 +152,15 @@ export class TicketBoughtEntity extends Entity {
 
   set count(value: BigInt) {
     this.set("count", Value.fromBigInt(value));
+  }
+
+  get ticketID(): BigInt {
+    let value = this.get("ticketID");
+    return value!.toBigInt();
+  }
+
+  set ticketID(value: BigInt) {
+    this.set("ticketID", Value.fromBigInt(value));
   }
 
   get childContract(): string | null {
@@ -194,6 +204,7 @@ export class ChildCreatedEntity extends Entity {
     this.set("description", Value.fromString(""));
     this.set("link", Value.fromString(""));
     this.set("date", Value.fromString(""));
+    this.set("venue", Value.fromString(""));
     this.set("ticketsBought", Value.fromStringArray(new Array(0)));
     this.set("childAddress", Value.fromString(""));
     this.set("category", Value.fromString(""));
@@ -307,6 +318,15 @@ export class ChildCreatedEntity extends Entity {
 
   set date(value: string) {
     this.set("date", Value.fromString(value));
+  }
+
+  get venue(): string {
+    let value = this.get("venue");
+    return value!.toString();
+  }
+
+  set venue(value: string) {
+    this.set("venue", Value.fromString(value));
   }
 
   get ticketsBought(): Array<string> {

@@ -6,9 +6,9 @@ dataSources:
     name: MetaStorage
     network: mumbai
     source:
-      address: "0x9eBF87df7877fe3D06051ee53916Ce828cF261f6"
+      address: "0x810f662d042cc24c5929Bfc573FCe4A9F9acCa8e"
       abi: MetaStorage
-      startBlock: 24885894
+      startBlock: 25128241
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -24,9 +24,9 @@ dataSources:
       eventHandlers:
         - event: HostCreated(address,string,string,string,string)
           handler: handleHostCreated
-        - event: TicketBought(address,address)
+        - event: TicketBought(address,address,uint256)
           handler: handleTicketBought
-        - event: childCreated(string,uint256,uint256,string,address,string,string,string,address,string,address[])
+        - event: childCreated(string,uint256,uint256,string,address,string,string,string,address,string,address[],string)
           handler: handlechildCreated
         - event: CreateNewFeature(address)
           handler: handleCreateNewFeature

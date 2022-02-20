@@ -53,6 +53,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "childContract",
@@ -63,6 +82,12 @@
         "internalType": "address",
         "name": "buyer",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "name": "TicketBought",
@@ -136,6 +161,12 @@
         "internalType": "address[]",
         "name": "buyers",
         "type": "address[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "venue",
+        "type": "string"
       }
     ],
     "name": "childCreated",
@@ -193,11 +224,35 @@
         "internalType": "address",
         "name": "_sender",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
       }
     ],
     "name": "emitTicketBuy",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "featuredArray",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -255,11 +310,36 @@
             "internalType": "address",
             "name": "eventHost",
             "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "venue",
+            "type": "string"
           }
         ],
         "internalType": "struct MetaStorage.EventData[]",
         "name": "_EventData",
         "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getRewards",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -316,9 +396,34 @@
         "internalType": "string",
         "name": "category",
         "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "venue",
+        "type": "string"
       }
     ],
     "name": "pushEventDetails",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

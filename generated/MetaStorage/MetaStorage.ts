@@ -62,6 +62,28 @@ export class HostCreated__Params {
   }
 }
 
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
+  }
+}
+
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
+
+  constructor(event: OwnershipTransferred) {
+    this._event = event;
+  }
+
+  get previousOwner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class TicketBought extends ethereum.Event {
   get params(): TicketBought__Params {
     return new TicketBought__Params(this);
@@ -81,6 +103,10 @@ export class TicketBought__Params {
 
   get buyer(): Address {
     return this._event.parameters[1].value.toAddress();
+  }
+
+  get tokenId(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -140,6 +166,10 @@ export class childCreated__Params {
   get buyers(): Array<Address> {
     return this._event.parameters[10].value.toAddressArray();
   }
+
+  get venue(): string {
+    return this._event.parameters[11].value.toString();
+  }
 }
 
 export class MetaStorage__getEventDetailsResult_EventDataStruct extends ethereum.Tuple {
@@ -182,6 +212,10 @@ export class MetaStorage__getEventDetailsResult_EventDataStruct extends ethereum
   get eventHost(): Address {
     return this[9].toAddress();
   }
+
+  get venue(): string {
+    return this[10].toString();
+  }
 }
 
 export class MetaStorage extends ethereum.SmartContract {
@@ -189,10 +223,33 @@ export class MetaStorage extends ethereum.SmartContract {
     return new MetaStorage("MetaStorage", address);
   }
 
+  featuredArray(param0: BigInt): Address {
+    let result = super.call(
+      "featuredArray",
+      "featuredArray(uint256):(address)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_featuredArray(param0: BigInt): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "featuredArray",
+      "featuredArray(uint256):(address)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   getEventDetails(): Array<MetaStorage__getEventDetailsResult_EventDataStruct> {
     let result = super.call(
       "getEventDetails",
-      "getEventDetails():((string,string,string,uint256,uint256,uint256,string,address,string,address)[])",
+      "getEventDetails():((string,string,string,uint256,uint256,uint256,string,address,string,address,string)[])",
       []
     );
 
@@ -206,7 +263,7 @@ export class MetaStorage extends ethereum.SmartContract {
   > {
     let result = super.tryCall(
       "getEventDetails",
-      "getEventDetails():((string,string,string,uint256,uint256,uint256,string,address,string,address)[])",
+      "getEventDetails():((string,string,string,uint256,uint256,uint256,string,address,string,address,string)[])",
       []
     );
     if (result.reverted) {
@@ -218,6 +275,21 @@ export class MetaStorage extends ethereum.SmartContract {
         MetaStorage__getEventDetailsResult_EventDataStruct
       >()
     );
+  }
+
+  owner(): Address {
+    let result = super.call("owner", "owner():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_owner(): ethereum.CallResult<Address> {
+    let result = super.tryCall("owner", "owner():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 }
 
@@ -317,12 +389,42 @@ export class EmitTicketBuyCall__Inputs {
   get _sender(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
+
+  get _id(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
 }
 
 export class EmitTicketBuyCall__Outputs {
   _call: EmitTicketBuyCall;
 
   constructor(call: EmitTicketBuyCall) {
+    this._call = call;
+  }
+}
+
+export class GetRewardsCall extends ethereum.Call {
+  get inputs(): GetRewardsCall__Inputs {
+    return new GetRewardsCall__Inputs(this);
+  }
+
+  get outputs(): GetRewardsCall__Outputs {
+    return new GetRewardsCall__Outputs(this);
+  }
+}
+
+export class GetRewardsCall__Inputs {
+  _call: GetRewardsCall;
+
+  constructor(call: GetRewardsCall) {
+    this._call = call;
+  }
+}
+
+export class GetRewardsCall__Outputs {
+  _call: GetRewardsCall;
+
+  constructor(call: GetRewardsCall) {
     this._call = call;
   }
 }
@@ -383,12 +485,72 @@ export class PushEventDetailsCall__Inputs {
   get category(): string {
     return this._call.inputValues[9].value.toString();
   }
+
+  get venue(): string {
+    return this._call.inputValues[10].value.toString();
+  }
 }
 
 export class PushEventDetailsCall__Outputs {
   _call: PushEventDetailsCall;
 
   constructor(call: PushEventDetailsCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall extends ethereum.Call {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class TransferOwnershipCall extends ethereum.Call {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
     this._call = call;
   }
 }

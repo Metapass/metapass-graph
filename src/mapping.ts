@@ -64,19 +64,24 @@ export function handleTicketBought(event: TicketBought): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
   let entity = TicketBoughtEntity.load(
-    event.transaction.hash.toHexString() + "-" + event.logIndex.toHexString()
+    event.params.childContract.toHexString() +
+      "-" +
+      event.params.tokenId.toString()
   );
 
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (!entity) {
     entity = new TicketBoughtEntity(
-      event.transaction.hash.toHexString() + "-" + event.logIndex.toHexString()
+      event.params.childContract.toHexString() +
+        "-" +
+        event.params.tokenId.toString()
     );
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0);
   }
+  entity.ticketID = event.params.tokenId;
   entity.count = entity.count + BigInt.fromI32(1);
   let user = User.load(event.params.buyer.toHexString());
   if (!user) {
@@ -145,6 +150,7 @@ export function handlechildCreated(event: childCreated): void {
   // if(user){
   //   entity.buyers.push(user.id);
   entity.count = entity.count + BigInt.fromI32(1);
+  entity.venue = event.params.venue;
   entity.title = event.params.title;
   entity.fee = event.params.fee;
   entity.seats = event.params.seats;

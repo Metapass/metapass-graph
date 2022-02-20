@@ -11,6 +11,7 @@ type HostCreatedEntity @entity {
 type TicketBoughtEntity @entity {
   id: ID!
   count: BigInt!
+  ticketID: BigInt!
   childContract: ChildCreatedEntity
   buyer: User! # User
   # ticketID: BigInt! # bigint
@@ -27,6 +28,7 @@ type ChildCreatedEntity @entity {
   description: String! # string
   link: String! # string
   date: String! # string
+  venue: String! # string
   ticketsBought: [TicketBoughtEntity!]! # TicketBoughtEntity
   childAddress: String! # string
   category: String! # string
