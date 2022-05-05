@@ -5,6 +5,7 @@ import {
   TicketBought,
   childCreated,
   CreateNewFeature,
+  linkUpdate,
 } from "../generated/MetaStorage/MetaStorage";
 import {
   HostCreatedEntity,
@@ -12,6 +13,7 @@ import {
   ChildCreatedEntity,
   FeaturedEntity,
   User,
+  UpdatedLink,
 } from "../generated/schema";
 import { log } from "@graphprotocol/graph-ts";
 
@@ -185,5 +187,19 @@ export function handleCreateNewFeature(eventThree: CreateNewFeature): void {
   if (child) {
     entity.event = child.id;
   }
+  entity.save();
+}
+export function handleUpdateLink(eventFour: linkUpdate): void {
+  let entity = UpdatedLink.load(eventFour.params.childContract.toString());
+  if (!entity) {
+    entity = new UpdatedLink(eventFour.params.childContract.toString());
+  }
+  let child = ChildCreatedEntity.load(
+    eventFour.params.childContract.toString()
+  );
+  if (child) {
+    entity.childContract = child.id;
+  }
+  entity.link = eventFour.params.link;
   entity.save();
 }

@@ -172,6 +172,84 @@ export class childCreated__Params {
   }
 }
 
+export class linkUpdate extends ethereum.Event {
+  get params(): linkUpdate__Params {
+    return new linkUpdate__Params(this);
+  }
+}
+
+export class linkUpdate__Params {
+  _event: linkUpdate;
+
+  constructor(event: linkUpdate) {
+    this._event = event;
+  }
+
+  get childContract(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get link(): string {
+    return this._event.parameters[1].value.toString();
+  }
+}
+
+export class MetaStorage__detailsMapResult {
+  value0: string;
+  value1: string;
+  value2: string;
+  value3: BigInt;
+  value4: BigInt;
+  value5: BigInt;
+  value6: string;
+  value7: Address;
+  value8: string;
+  value9: Address;
+  value10: string;
+
+  constructor(
+    value0: string,
+    value1: string,
+    value2: string,
+    value3: BigInt,
+    value4: BigInt,
+    value5: BigInt,
+    value6: string,
+    value7: Address,
+    value8: string,
+    value9: Address,
+    value10: string
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
+    this.value5 = value5;
+    this.value6 = value6;
+    this.value7 = value7;
+    this.value8 = value8;
+    this.value9 = value9;
+    this.value10 = value10;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromString(this.value0));
+    map.set("value1", ethereum.Value.fromString(this.value1));
+    map.set("value2", ethereum.Value.fromString(this.value2));
+    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
+    map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
+    map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
+    map.set("value6", ethereum.Value.fromString(this.value6));
+    map.set("value7", ethereum.Value.fromAddress(this.value7));
+    map.set("value8", ethereum.Value.fromString(this.value8));
+    map.set("value9", ethereum.Value.fromAddress(this.value9));
+    map.set("value10", ethereum.Value.fromString(this.value10));
+    return map;
+  }
+}
+
 export class MetaStorage__getEventDetailsResult_EventDataStruct extends ethereum.Tuple {
   get title(): string {
     return this[0].toString();
@@ -218,9 +296,90 @@ export class MetaStorage__getEventDetailsResult_EventDataStruct extends ethereum
   }
 }
 
+export class MetaStorage__profileMapResult {
+  value0: string;
+  value1: string;
+  value2: string;
+  value3: string;
+
+  constructor(value0: string, value1: string, value2: string, value3: string) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromString(this.value0));
+    map.set("value1", ethereum.Value.fromString(this.value1));
+    map.set("value2", ethereum.Value.fromString(this.value2));
+    map.set("value3", ethereum.Value.fromString(this.value3));
+    return map;
+  }
+}
+
 export class MetaStorage extends ethereum.SmartContract {
   static bind(address: Address): MetaStorage {
     return new MetaStorage("MetaStorage", address);
+  }
+
+  detailsMap(param0: Address, param1: BigInt): MetaStorage__detailsMapResult {
+    let result = super.call(
+      "detailsMap",
+      "detailsMap(address,uint256):(string,string,string,uint256,uint256,uint256,string,address,string,address,string)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+
+    return new MetaStorage__detailsMapResult(
+      result[0].toString(),
+      result[1].toString(),
+      result[2].toString(),
+      result[3].toBigInt(),
+      result[4].toBigInt(),
+      result[5].toBigInt(),
+      result[6].toString(),
+      result[7].toAddress(),
+      result[8].toString(),
+      result[9].toAddress(),
+      result[10].toString()
+    );
+  }
+
+  try_detailsMap(
+    param0: Address,
+    param1: BigInt
+  ): ethereum.CallResult<MetaStorage__detailsMapResult> {
+    let result = super.tryCall(
+      "detailsMap",
+      "detailsMap(address,uint256):(string,string,string,uint256,uint256,uint256,string,address,string,address,string)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new MetaStorage__detailsMapResult(
+        value[0].toString(),
+        value[1].toString(),
+        value[2].toString(),
+        value[3].toBigInt(),
+        value[4].toBigInt(),
+        value[5].toBigInt(),
+        value[6].toString(),
+        value[7].toAddress(),
+        value[8].toString(),
+        value[9].toAddress(),
+        value[10].toString()
+      )
+    );
   }
 
   featuredArray(param0: BigInt): Address {
@@ -290,6 +449,43 @@ export class MetaStorage extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  profileMap(param0: Address): MetaStorage__profileMapResult {
+    let result = super.call(
+      "profileMap",
+      "profileMap(address):(string,string,string,string)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+
+    return new MetaStorage__profileMapResult(
+      result[0].toString(),
+      result[1].toString(),
+      result[2].toString(),
+      result[3].toString()
+    );
+  }
+
+  try_profileMap(
+    param0: Address
+  ): ethereum.CallResult<MetaStorage__profileMapResult> {
+    let result = super.tryCall(
+      "profileMap",
+      "profileMap(address):(string,string,string,string)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new MetaStorage__profileMapResult(
+        value[0].toString(),
+        value[1].toString(),
+        value[2].toString(),
+        value[3].toString()
+      )
+    );
   }
 }
 
@@ -361,6 +557,40 @@ export class CreateFeaturedEventCall__Outputs {
   _call: CreateFeaturedEventCall;
 
   constructor(call: CreateFeaturedEventCall) {
+    this._call = call;
+  }
+}
+
+export class EmitLinkUpdateCall extends ethereum.Call {
+  get inputs(): EmitLinkUpdateCall__Inputs {
+    return new EmitLinkUpdateCall__Inputs(this);
+  }
+
+  get outputs(): EmitLinkUpdateCall__Outputs {
+    return new EmitLinkUpdateCall__Outputs(this);
+  }
+}
+
+export class EmitLinkUpdateCall__Inputs {
+  _call: EmitLinkUpdateCall;
+
+  constructor(call: EmitLinkUpdateCall) {
+    this._call = call;
+  }
+
+  get _event(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _link(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+}
+
+export class EmitLinkUpdateCall__Outputs {
+  _call: EmitLinkUpdateCall;
+
+  constructor(call: EmitLinkUpdateCall) {
     this._call = call;
   }
 }

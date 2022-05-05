@@ -46,7 +46,10 @@ type User @entity {
   id: ID!
   tickets: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
 }
-# interface Userschema {
-#   id: ID!
-#   tickets: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
-# }
+
+type UpdatedLink @entity {
+  id: ID!
+
+  link: String! # string
+  childContract: ChildCreatedEntity
+}

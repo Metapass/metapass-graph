@@ -468,3 +468,64 @@ export class User extends Entity {
     this.set("tickets", Value.fromStringArray(value));
   }
 }
+
+export class UpdatedLink extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("link", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UpdatedLink entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save UpdatedLink entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("UpdatedLink", id.toString(), this);
+    }
+  }
+
+  static load(id: string): UpdatedLink | null {
+    return changetype<UpdatedLink | null>(store.get("UpdatedLink", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get link(): string {
+    let value = this.get("link");
+    return value!.toString();
+  }
+
+  set link(value: string) {
+    this.set("link", Value.fromString(value));
+  }
+
+  get childContract(): string | null {
+    let value = this.get("childContract");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set childContract(value: string | null) {
+    if (!value) {
+      this.unset("childContract");
+    } else {
+      this.set("childContract", Value.fromString(<string>value));
+    }
+  }
+}
