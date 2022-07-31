@@ -32,7 +32,7 @@ export function handleHostCreated(event: HostCreated): void {
   }
 
   // BigInt and BigDecimal math are supported
-  entity.count = BigInt.fromI32(Number(entity.count) + 1);
+  entity.count = entity.count.plus(BigInt.fromI32(1));
 
   // Entity fields can be set based on event parameters
   entity._hostAddress = event.params._hostAddress.toHexString();
@@ -50,8 +50,8 @@ export function handleTicketBought(event: TicketBought): void {
   // needs to be unique across all entities of the same type
   let entity = TicketBoughtEntity.load(
     event.params.childContract.toHexString() +
-      "-" +
-      event.params.tokenId.toString()
+    "-" +
+    event.params.tokenId.toString()
   );
 
   // Entities only exist after they have been saved to the store;
@@ -59,16 +59,16 @@ export function handleTicketBought(event: TicketBought): void {
   if (!entity) {
     entity = new TicketBoughtEntity(
       event.params.childContract.toHexString() +
-        "-" +
-        event.params.tokenId.toString()
+      "-" +
+      event.params.tokenId.toString()
     );
 
     // Entity fields can be set using simple assignments
     entity.count = BigInt.fromI32(0);
   }
   entity.ticketID = event.params.tokenId;
-  entity.count = BigInt.fromI32(Number(entity.count) + 1);
-  entity.timestamp = new Date().toString();
+  entity.count = entity.count.plus(BigInt.fromI32(1));
+  entity.timestamp = event.block.timestamp
 
   let user = User.load(event.params.buyer.toHexString());
   if (!user) {
@@ -136,7 +136,7 @@ export function handlechildCreated(event: childCreated): void {
 
   // if(user){
   //   entity.buyers.push(user.id);
-  entity.count = BigInt.fromI32(Number(entity.count) + 1);
+  entity.count = entity.count.plus(BigInt.fromI32(1));
   entity.venue = event.params.venue;
   entity.title = event.params.title;
   entity.fee = event.params.fee;

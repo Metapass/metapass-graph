@@ -14,7 +14,7 @@ type TicketBoughtEntity @entity {
 	ticketID: BigInt!
 	childContract: ChildCreatedEntity
 	buyer: User! # User
-	timestamp: String!
+	timestamp: BigInt!
 }
 
 type ChildCreatedEntity @entity {

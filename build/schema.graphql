@@ -1,55 +1,55 @@
 type HostCreatedEntity @entity {
-  id: ID!
-  count: BigInt!
-  _hostAddress: String! # address
-  name: String! # string
-  image: String! # string
-  bio: String! # string
-  socialLinks: String! # string
+	id: ID!
+	count: BigInt!
+	_hostAddress: String! # address
+	name: String! # string
+	image: String! # string
+	bio: String! # string
+	socialLinks: String! # string
 }
 
 type TicketBoughtEntity @entity {
-  id: ID!
-  count: BigInt!
-  ticketID: BigInt!
-  childContract: ChildCreatedEntity
-  buyer: User! # User
-  # ticketID: BigInt! # bigint
+	id: ID!
+	count: BigInt!
+	ticketID: BigInt!
+	childContract: ChildCreatedEntity
+	buyer: User! # User
+	timestamp: BigInt!
 }
 
 type ChildCreatedEntity @entity {
-  id: ID!
-  count: BigInt!
-  title: String! # string
-  fee: BigInt! # uint256
-  seats: BigInt! # uint256
-  image: String! # string
-  eventHost: String! # string
-  description: String! # string
-  link: String! # string
-  date: String! # string
-  venue: String! # string
-  ticketsBought: [TicketBoughtEntity!]! # TicketBoughtEntity
-  childAddress: String! # string
-  category: String! # string
-  # user: User! # User
-  buyers: [User!]!
+	id: ID!
+	count: BigInt!
+	title: String! # string
+	fee: BigInt! # uint256
+	seats: BigInt! # uint256
+	image: String! # string
+	eventHost: String! # string
+	description: String! # string
+	link: String! # string
+	date: String! # string
+	venue: String! # string
+	ticketsBought: [TicketBoughtEntity!]! # TicketBoughtEntity
+	childAddress: String! # string
+	category: String! # string
+	# user: User! # User
+	buyers: [User!]!
 }
 
 type FeaturedEntity @entity {
-  id: ID!
-  count: BigInt!
-  event: ChildCreatedEntity
+	id: ID!
+	count: BigInt!
+	event: ChildCreatedEntity
 }
 
 type User @entity {
-  id: ID!
-  tickets: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
+	id: ID!
+	tickets: [TicketBoughtEntity!]! @derivedFrom(field: "buyer")
 }
 
 type UpdatedLink @entity {
-  id: ID!
+	id: ID!
 
-  link: String! # string
-  childContract: ChildCreatedEntity
+	link: String! # string
+	childContract: ChildCreatedEntity
 }

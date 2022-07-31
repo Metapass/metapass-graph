@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 schema:
   file: schema.graphql
 dataSources:
@@ -21,7 +21,7 @@ dataSources:
         - linkUpdate
       abis:
         - name: MetaStorage
-          file: MetaStorage/abis/MetaStorage.json
+          file: MetaStorage\abis\MetaStorage.json
       eventHandlers:
         - event: HostCreated(address,string,string,string,string)
           handler: handleHostCreated
@@ -33,4 +33,4 @@ dataSources:
           handler: handleCreateNewFeature
         - event: linkUpdate(indexed address,string)
           handler: handleUpdateLink
-      file: MetaStorage/MetaStorage.wasm
+      file: MetaStorage\MetaStorage.wasm
