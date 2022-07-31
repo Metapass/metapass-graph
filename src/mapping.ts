@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, store } from "@graphprotocol/graph-ts";
 import {
   MetaStorage,
   HostCreated,
@@ -43,8 +43,6 @@ export function handleHostCreated(event: HostCreated): void {
 
   // Entities can be written to the store with `.save()`
   entity.save();
-
-
 }
 
 export function handleTicketBought(event: TicketBought): void {
@@ -52,8 +50,8 @@ export function handleTicketBought(event: TicketBought): void {
   // needs to be unique across all entities of the same type
   let entity = TicketBoughtEntity.load(
     event.params.childContract.toHexString() +
-    "-" +
-    event.params.tokenId.toString()
+      "-" +
+      event.params.tokenId.toString()
   );
 
   // Entities only exist after they have been saved to the store;
@@ -61,8 +59,8 @@ export function handleTicketBought(event: TicketBought): void {
   if (!entity) {
     entity = new TicketBoughtEntity(
       event.params.childContract.toHexString() +
-      "-" +
-      event.params.tokenId.toString()
+        "-" +
+        event.params.tokenId.toString()
     );
 
     // Entity fields can be set using simple assignments
@@ -157,35 +155,36 @@ export function handlechildCreated(event: childCreated): void {
 
 export function handleCreateNewFeature(eventThree: CreateNewFeature): void {
   let entity = FeaturedEntity.load(
-    eventThree.transaction.hash.toHexString() +
-    "-" +
-    eventThree.logIndex.toHexString()
+    eventThree.params.featuredEventContract.toHexString()
   );
   if (!entity) {
     entity = new FeaturedEntity(
-      eventThree.transaction.hash.toHexString() +
-      "-" +
-      eventThree.logIndex.toHexString()
+      eventThree.params.featuredEventContract.toHexString()
     );
+    let child = ChildCreatedEntity.load(
+      eventThree.params.featuredEventContract.toHexString()
+    );
+    if (child) {
+      entity.event = child.id;
+    }
+    entity.save();
+  } else {
+    store.remove("FeaturedEntity", entity.id);
   }
-  let child = ChildCreatedEntity.load(
-    eventThree.params.featuredEventContract.toHexString()
-  );
-  if (child) {
-    entity.event = child.id;
-  }
-  entity.save();
 }
+
 export function handleUpdateLink(eventFour: linkUpdate): void {
-  let entity = UpdatedLink.load(eventFour.params.childContract.toString());
+  let entity = UpdatedLink.load(eventFour.params.childContract.toHexString());
   if (!entity) {
-    entity = new UpdatedLink(eventFour.params.childContract.toString());
+    entity = new UpdatedLink(eventFour.params.childContract.toHexString());
   }
   let child = ChildCreatedEntity.load(
-    eventFour.params.childContract.toString()
+    eventFour.params.childContract.toHexString()
   );
   if (child) {
     entity.childContract = child.id;
+    child.link = eventFour.params.link;
+    child.save();
   }
   entity.link = eventFour.params.link;
   entity.save();

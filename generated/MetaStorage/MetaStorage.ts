@@ -248,50 +248,6 @@ export class MetaStorage__detailsMapResult {
     map.set("value10", ethereum.Value.fromString(this.value10));
     return map;
   }
-
-  getTitle(): string {
-    return this.value0;
-  }
-
-  getImage(): string {
-    return this.value1;
-  }
-
-  getLink(): string {
-    return this.value2;
-  }
-
-  getFee(): BigInt {
-    return this.value3;
-  }
-
-  getSeats(): BigInt {
-    return this.value4;
-  }
-
-  getOccupiedSeats(): BigInt {
-    return this.value5;
-  }
-
-  getDate(): string {
-    return this.value6;
-  }
-
-  getChildContract(): Address {
-    return this.value7;
-  }
-
-  getDescription(): string {
-    return this.value8;
-  }
-
-  getEventHost(): Address {
-    return this.value9;
-  }
-
-  getVenue(): string {
-    return this.value10;
-  }
 }
 
 export class MetaStorage__getEventDetailsResult_EventDataStruct extends ethereum.Tuple {
@@ -360,22 +316,6 @@ export class MetaStorage__profileMapResult {
     map.set("value2", ethereum.Value.fromString(this.value2));
     map.set("value3", ethereum.Value.fromString(this.value3));
     return map;
-  }
-
-  getName(): string {
-    return this.value0;
-  }
-
-  getProfileImage(): string {
-    return this.value1;
-  }
-
-  getBio(): string {
-    return this.value2;
-  }
-
-  getSocialLinks(): string {
-    return this.value3;
   }
 }
 
